@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Document</title>
+
+
+   <script src="https://unpkg.com/react@^16/umd/react.production.min.js"></script>
+   <script src="https://unpkg.com/react-dom@16.13.0/umd/react-dom.production.min.js"></script>
+   <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+ </head>
+ <body>
+   <div id="root"></div>
+   <script type="text/babel">
+        class Parent extends React.Component {
+            // constructor can be omitted if not doing anything special
+            state = {
+                balance: 100,
+                showChild: false,
+            };
+
+            componentDidMount() {
+                console.log("Parent componentDidMount");
+            }
+
+            componentWillUnmount() {
+                console.log("Parent componentWillUnmount");
+            }
+
+            componentDidUpdate(prevProps, prevState) {
+                console.log("Parent componentDidUpdate", prevProps, prevState);
+            }
+
+            render() {
+                console.log("Parent render");
+                return (
+                    <div>
+                        <p>继承者们的故事</p>
+                        <p>Parent</p>
+                        <p>account balance: {this.state.balance}</p>
+
+                        <button
+                            onClick={() => {
+                                this.setState({ 
+                                    showChild: !this.state.showChild,
+                                });
+                            }}
+                        >
+                            生小宝宝 / 放弃小宝宝
+                        </button>
+
+                        <button
+                            onClick={() => {
+                                this.setState({ 
+                                    balance: this.state.balance + 10,
+                                });
+                            }}
+                        >
+                            挣钱 +10
+                        </button>
+
+                        {this.state.showChild && <Child parentBalance={this.state.balance} />}
+
+                    </div>
+                )
+            }
+        }
+
+        class Child extends React.Component {
+            constructor(props) {
+                console.log("Child constructor");
+                super(props);
+                this.state = {
+                    balance: 0,
+                };
+            }
+
+            componentDidMount() {
+                console.log("Child componentDidMount");
+            }
+
+            componentWillUnmount() {
+                console.log("Child componentWillUnmount");
+            }
+
+            componentDidUpdate(prevProps, prevState) {
+                console.log("Child componentDidUpdate", prevProps, prevState);
+            }
+
+            render() {
+                console.log("Child render");
+                return (
+                    <div>
+                        <p>Child</p>
+                        <p>Parent's account balance: {this.props.parentBalance}</p>
+                        <p>Child's account balance: {this.state.balance}</p>
+                        <button
+                            onClick={() => {
+                                this.setState({ 
+                                    balance: this.state.balance + 10,
+                                });
+                            }}
+                        >
+                            自食其力
+                        </button>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<Parent />, document.getElementById("root"));
+   </script>
+ </body>
+</html>

@@ -1,0 +1,75 @@
+h1 {
+    font-family: 'Times New Roman', Times, serif;
+} 
+
+#description {
+    color: green;
+}
+
+.bg-red {
+    background-color: pink;
+}
+
+/* decendant selector */
+div span p {
+    background-color: yellow;
+}
+
+/* child selector */
+div > div {
+    color: red;
+}
+
+* {
+    /* IE box model */
+    box-sizing: border-box;
+}
+
+#bm-example {
+    background-color: orange;
+    width: 200px;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+#box-container {
+    /* position:static; */
+    position: relative;
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+    border: 2px blue solid;
+}
+
+/* relative to its own position */
+/* #box2 {
+    position: relative;
+    top: 20px;
+    left: 20px;
+} */
+
+/* relative to its ancestor */
+/* #box2 {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+} */
+
+/* #box2 {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+} */
+
+#flexbox-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#flexbox2 {
+    flex-grow: 1;
+}

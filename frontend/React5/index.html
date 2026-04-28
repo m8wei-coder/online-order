@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Document</title>
+
+
+   <script src="https://unpkg.com/react@^16/umd/react.production.min.js"></script>
+   <script src="https://unpkg.com/react-dom@16.13.0/umd/react-dom.production.min.js"></script>
+   <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+ </head>
+ <body>
+   <div id="root"></div>
+   <script type="text/babel">
+        const Parent = () => {
+            const [balance, setBalance] = React.useState(100);
+            const [showChild, setShowChild] = React.useState(false);
+
+            React.useEffect(() => {
+                console.log("Parent componentDidMount / componentDidUpdate");
+                return () => {
+                    console.log("Parent componentWillUnmount");
+                };
+            });
+
+            // dependency array
+            // case1: no dependency array - runs side effect whenever states / props change
+            // case2: [] - runs side effect only once during the first mounting
+            // case3: [a, b, c] - runs side effect whenever a, b, c change, if d, e, f change, nothing happens
+
+            console.log("Parent render");
+            return (
+                <div>
+                    <p>继承者们的故事</p>
+                    <p>Parent</p>
+                    <p>account balance: {balance}</p>
+
+                    <button
+                        onClick={() => {
+                            setShowChild(!showChild);
+                        }}
+                    >
+                        生小宝宝 / 放弃小宝宝
+                    </button>
+
+                    <button
+                        onClick={() => {
+                            setBalance(balance + 10);
+                        }}
+                    >
+                        挣钱 +10
+                    </button>
+
+                    {showChild && <Child parentBalance={balance} />}
+
+                </div>
+            );
+        };
+
+        const Child = (props) => {
+            const [balance, setBalance] = React.useState(0);
+
+            React.useEffect(() => {
+                console.log("Child componentDidMount / componentDidUpdate");
+                return () => {
+                    console.log("Child componentWillUnmount");
+                };
+            });
+
+            console.log("Child render");
+            return (
+                <div>
+                    <p>Child</p>
+                    <p>Parent's account balance: {props.parentBalance}</p>
+                    <p>Child's account balance: {balance}</p>
+                    <button
+                        onClick={() => {
+                            setBalance(balance + 10);
+                        }}
+                    >
+                        自食其力
+                    </button>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<Parent />, document.getElementById("root"));
+   </script>
+ </body>
+</html>
