@@ -3,6 +3,9 @@ import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { login } from "../utils";
 
+// TODO: add google login
+// TODO: add password protection
+
 class LoginForm extends React.Component {
   state = {
     loading: false,
