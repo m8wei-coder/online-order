@@ -14,7 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+// test the method
+//@Component
 public class DevRunner implements ApplicationRunner {
     // A logger for print
     private static final Logger logger = LoggerFactory.getLogger(DevRunner.class);
