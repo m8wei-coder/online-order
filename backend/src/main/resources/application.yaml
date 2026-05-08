@@ -14,8 +14,8 @@ spring:
     driver-class-name: org.postgresql.Driver
   sql:
     init:
-      mode: ${INIT_DB:always}
-#      mode: ${INIT_DB:never}
+#      mode: ${INIT_DB:always}
+      mode: ${INIT_DB:never}
       schema-locations: "classpath:database-init.sql"
   cache:
     caffeine:
