@@ -93,20 +93,14 @@ public class CartServiceTests {
         long customerId = 1L;
         long cartId = 3L;
         CartEntity cartEntity = new CartEntity(cartId, customerId, 21.0);
-        List<OrderItemEntity> orderItems = List.of(
-                new OrderItemEntity(1L, 1L, cartId, 10.0, 1),
-                new OrderItemEntity(2L, 2L, cartId, 10.0, 2)
-        );
-        List<MenuItemEntity> menuItems = List.of(
-                new MenuItemEntity(1L, 1L, "Name1", "", 1.0, ""),
-                new MenuItemEntity(2L, 1L, "Name2", "", 10.0, "")
+        List<com.laioffer.onlineorder.repository.CartItemReadRow> orderItems = List.of(
+                new com.laioffer.onlineorder.repository.CartItemReadRow(1L, 1L, 1L, 10.0, 1, "Name1", "", ""),
+                new com.laioffer.onlineorder.repository.CartItemReadRow(2L, 2L, 1L, 10.0, 2, "Name2", "", "")
         );
 
         // Mock repository method calls
         Mockito.when(cartRepository.getByCustomerId(customerId)).thenReturn(cartEntity);
-        Mockito.when(orderItemRepository.getAllByCartId(cartEntity.id())).thenReturn(orderItems);
-        Mockito.when(menuItemRepository.findById(1L)).thenReturn(Optional.of(menuItems.get(0)));
-        Mockito.when(menuItemRepository.findById(2L)).thenReturn(Optional.of(menuItems.get(1)));
+        Mockito.when(orderItemRepository.getCartItemsWithMenuDetails(cartEntity.id())).thenReturn(orderItems);
 
         // Perform the method under test
         CartDto cartDto = cartService.getCart(customerId);

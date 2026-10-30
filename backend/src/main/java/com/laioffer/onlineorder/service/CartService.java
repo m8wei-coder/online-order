@@ -8,8 +8,6 @@ import com.laioffer.onlineorder.model.OrderItemDto;
 import com.laioffer.onlineorder.repository.CartRepository;
 import com.laioffer.onlineorder.repository.MenuItemRepository;
 import com.laioffer.onlineorder.repository.OrderItemRepository;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +31,6 @@ public class CartService {
 
     // 保护数据完整性(temp data)
     // 用于多个写操作
-    @CacheEvict(cacheNames = "cart", key = "#customerId")
     @Transactional
     public void addMenuItemToCart(long customerId, long menuItemId) {
         CartEntity cart = cartRepository.getByCustomerIdForUpdate(customerId);
@@ -57,15 +54,16 @@ public class CartService {
         cartRepository.updateTotalPrice(cart.id(), cart.totalPrice() + menuItem.price());
     }
 
-    @Cacheable("cart")
     public CartDto getCart(Long customerId) {
         CartEntity cart = cartRepository.getByCustomerId(customerId);
-        List<OrderItemEntity> orderItems = orderItemRepository.getAllByCartId(cart.id());
-        List<OrderItemDto> orderItemDtos = getOrderItemDtos(orderItems);
+        List<OrderItemDto> orderItemDtos = orderItemRepository.getCartItemsWithMenuDetails(cart.id()).stream()
+                .map(item -> new OrderItemDto(item.orderItemId(), item.menuItemId(), item.restaurantId(),
+                        item.price(), item.quantity(), item.menuItemName(), item.menuItemDescription(),
+                        item.menuItemImageUrl()))
+                .toList();
         return new CartDto(cart, orderItemDtos);
     }
 
-    @CacheEvict(cacheNames = "cart", key = "#customerId")
     @Transactional
     public void clearCart(Long customerId) {
         CartEntity cartEntity = cartRepository.getByCustomerIdForUpdate(customerId);
@@ -73,14 +71,5 @@ public class CartService {
         cartRepository.updateTotalPrice(cartEntity.id(), 0.0);
     }
 
-    private List<OrderItemDto> getOrderItemDtos(List<OrderItemEntity> orderItems) {
-        List<OrderItemDto> orderItemDtos = new ArrayList<>();
-        for (OrderItemEntity orderItem : orderItems) {
-            MenuItemEntity menuItem = menuItemRepository.findById(orderItem.menuItemId()).get();
-            OrderItemDto orderItemDto = new OrderItemDto(orderItem, menuItem);
-            orderItemDtos.add(orderItemDto);
-        }
-        return orderItemDtos;
-    }
 }
 
