@@ -9,6 +9,9 @@ import org.springframework.data.repository.ListCrudRepository;
 public interface CartRepository extends ListCrudRepository<CartEntity, Long> {
     CartEntity getByCustomerId(Long customerId);
 
+    @Query("SELECT id, customer_id, total_price FROM carts WHERE customer_id = :customerId FOR UPDATE")
+    CartEntity getByCustomerIdForUpdate(Long customerId);
+
     @Modifying
     @Query("UPDATE carts SET total_price = :totalPrice WHERE id = :cartId")
     void updateTotalPrice(Long cartId, Double totalPrice);

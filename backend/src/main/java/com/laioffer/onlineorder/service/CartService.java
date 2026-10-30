@@ -36,7 +36,7 @@ public class CartService {
     @CacheEvict(cacheNames = "cart", key = "#customerId")
     @Transactional
     public void addMenuItemToCart(long customerId, long menuItemId) {
-        CartEntity cart = cartRepository.getByCustomerId(customerId);
+        CartEntity cart = cartRepository.getByCustomerIdForUpdate(customerId);
         MenuItemEntity menuItem = menuItemRepository.findById(menuItemId).get();
         OrderItemEntity orderItem = orderItemRepository.findByCartIdAndMenuItemId(cart.id(), menuItem.id());
 
@@ -68,7 +68,7 @@ public class CartService {
     @CacheEvict(cacheNames = "cart", key = "#customerId")
     @Transactional
     public void clearCart(Long customerId) {
-        CartEntity cartEntity = cartRepository.getByCustomerId(customerId);
+        CartEntity cartEntity = cartRepository.getByCustomerIdForUpdate(customerId);
         orderItemRepository.deleteByCartId(cartEntity.id());
         cartRepository.updateTotalPrice(cartEntity.id(), 0.0);
     }

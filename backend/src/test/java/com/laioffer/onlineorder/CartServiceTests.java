@@ -49,7 +49,7 @@ public class CartServiceTests {
         MenuItemEntity menuItem = new MenuItemEntity(menuItemId, 1L, "Name", "", 10.0, "");
 
         // Mock repository method calls
-        Mockito.when(cartRepository.getByCustomerId(customerId)).thenReturn(cartEntity);
+        Mockito.when(cartRepository.getByCustomerIdForUpdate(customerId)).thenReturn(cartEntity);
         Mockito.when(menuItemRepository.findById(menuItemId)).thenReturn(Optional.of(menuItem));
         Mockito.when(orderItemRepository.findByCartIdAndMenuItemId(cartId, menuItemId)).thenReturn(null);
 
@@ -74,7 +74,7 @@ public class CartServiceTests {
         OrderItemEntity orderItemEntity = new OrderItemEntity(orderItemId, menuItemId, customerId, 10.0, 1);
 
         // Mock repository method calls
-        Mockito.when(cartRepository.getByCustomerId(customerId)).thenReturn(cartEntity);
+        Mockito.when(cartRepository.getByCustomerIdForUpdate(customerId)).thenReturn(cartEntity);
         Mockito.when(menuItemRepository.findById(menuItemId)).thenReturn(Optional.of(menuItem));
         Mockito.when(orderItemRepository.findByCartIdAndMenuItemId(cartId, menuItemId)).thenReturn(orderItemEntity);
 
@@ -125,7 +125,7 @@ public class CartServiceTests {
         CartEntity cartEntity = new CartEntity(cartId, customerId, 21.0);
 
         // Mock repository method calls
-        Mockito.when(cartRepository.getByCustomerId(customerId)).thenReturn(cartEntity);
+        Mockito.when(cartRepository.getByCustomerIdForUpdate(customerId)).thenReturn(cartEntity);
 
         // Perform the method under test
         cartService.clearCart(customerId);

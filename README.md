@@ -112,9 +112,11 @@ The dev server runs on `http://localhost:3000` and proxies API calls to `http://
 ### Tests
 
 ```bash
-cd backend && ./gradlew test
+cd backend && ./gradlew test --tests '*ServiceTests'
 cd frontend/doordash-app && npm test
 ```
+
+The backend command above runs the service unit tests. PostgreSQL authority and concurrency regressions use a dedicated test database; see [isolated test instructions](docs/testing.md). The application `contextLoads` test is outside this validated subset.
 
 ## Deployment (AWS)
 

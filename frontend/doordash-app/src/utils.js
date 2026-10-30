@@ -1,14 +1,18 @@
 export const login = (credentials) => {
   // TODO: Implement password encryption
   // TODO: Implement google login
-  const loginUrl = `/login?username=${credentials.username}&password=${credentials.password}`;
+  const loginUrl = "/login";
 
   // status code: 400 will not trigger .catch, but will trigger .then
   return fetch(loginUrl, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
+    body: new URLSearchParams({
+      username: credentials.username,
+      password: credentials.password,
+    }).toString(),
   }).then((response) => {
     // Pending, Fulfilled, Rejected
     // fetch returns a promise
